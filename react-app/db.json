@@ -1,0 +1,6 @@
+{
+  "todos":[
+    { "id": 1, "title": "Learn React", "isCompleted": true },
+    { "id": 2, "title": "Assignments", "isCompleted": true }
+  ]
+}
