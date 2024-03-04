@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {useFetch} from './useFetch';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Todo = () => {
   // todo data
@@ -9,56 +10,43 @@ const Todo = () => {
     isCompleted: boolean;
   }
 
-  let {data, error} = useFetch('http://localhost:5000/todos');
+  let {data, error, isLoading} = useFetch('http://localhost:5000/todos');
   const [todos, setTodos] = useState<ITodo[]>([]);
-  const [title, setTitle] = useState<string>("");
-  let countid = 10;
+  const navigate = useNavigate();
 
   useEffect(()=>{
     setTodos(data)
   },[data])
 
-  const handleDelete = (todo: ITodo) => {
+  if(isLoading){
+    console.log("Loading......");
+  }
+
+  const handleDelete = async (todo: ITodo) => {
     todos.splice(todos.indexOf(todo), 1);
     setTodos([...todos]);
+    await fetch('http://localhost:5000/todos/'+todo.id, { method: 'DELETE' }).then(()=>console.log("Deleted successfully"));
   };
-
-  const handleCheck = (todo: ITodo) => {
+  
+  const handleCheck = async (todo: ITodo) => {
     todo.isCompleted = !todo.isCompleted;
     setTodos([...todos]);
+    await fetch('http://localhost:5000/todos/'+todo.id, 
+    { method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ "isCompleted": todo.isCompleted, "title":todo.title})
+    })
   };
 
   return (
     <div className="todo-app">
       <h1>Todo list</h1>
-      {
-        //input todo
-        <>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="add a todo title"
-          />
-          <button
-            id="add"
-            onClick={() => {
-              setTodos([
-                ...todos,
-                { id: countid++, title: title, isCompleted: false },
-              ]);
-            }}
-          >
-            {" "}
-            ADD
-          </button>
-        </>
-      }
-
+      <button onClick={()=>navigate('/add')}>Add Todo</button>
       {
         //List all the todos
         todos.map((todo: ITodo) => (
           <>
-            <h3
+            <div className="container"
               id="title"
               style={{
                 textDecoration: todo.isCompleted ? "line-through" : "none",
@@ -72,7 +60,7 @@ const Todo = () => {
                 }}
                 type="checkbox"
               />
-              {todo.title}
+              <h3 onClick = {()=> navigate('/view/'+todo.id)}>{todo.title}</ h3>
               <button
                 id="delete"
                 onClick={() => {
@@ -82,7 +70,7 @@ const Todo = () => {
                 {" "}
                 Delete{" "}
               </button>
-            </h3>
+            </div>
           </>
         ))
       }
