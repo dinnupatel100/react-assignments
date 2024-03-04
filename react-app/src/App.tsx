@@ -1,7 +1,10 @@
 import './App.css'
+import Todo from './Todo'
 
 function App() {
-  return  <p></p>
+  return  (
+    <Todo/>
+  )
 }
 
 export default App
