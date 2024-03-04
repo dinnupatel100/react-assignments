@@ -9,7 +9,7 @@ const Todo = () => {
     isCompleted: boolean;
   }
 
-  let {data, error} = useFetch('http://localhost:5000/todos');
+  let {data, error, isLoading} = useFetch('http://localhost:5000/todos');
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [title, setTitle] = useState<string>("");
   let countid = 10;
@@ -31,6 +31,7 @@ const Todo = () => {
   return (
     <div className="todo-app">
       <h1>Todo list</h1>
+
       {
         //input todo
         <>
@@ -54,6 +55,12 @@ const Todo = () => {
         </>
       }
 
+      {
+        isLoading && <p>Loading.....</p>
+      }
+      {
+        error && <p>Error</p>
+      }
       {
         //List all the todos
         todos.map((todo: ITodo) => (
