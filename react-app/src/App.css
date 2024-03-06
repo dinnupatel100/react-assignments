@@ -27,6 +27,7 @@
 #delete{
   margin-left:15px;
   background-color: red;
+  color:white;
 }
 
 .container{
@@ -35,8 +36,8 @@
 
 #delete{
   height:25px;
-  width:70px;
-  margin-top:10px;
+  width: 70px;
+  margin-top: 10px
 }
 
 #todo{
