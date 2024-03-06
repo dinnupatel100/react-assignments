@@ -1,15 +1,11 @@
 .todo-app {
   text-align: center;
   border: 1px solid black;
-  margin-left: 200px;
+  margin-left: 320px;
   margin-right: 200px;
   padding: 10px;
-  background-color:darkslategray;
+  background-color:rgb(55, 143, 146);
   border-radius: 10px;
-}
-
-h1{
-  color:white
 }
 
 #button{
@@ -19,7 +15,8 @@ h1{
 
 #add{
   margin-left:10px;
-  background-color:chartreuse;
+  background-color:rgb(7, 91, 95);
+  color:aliceblue;
 }
 
 #cancel{
@@ -32,18 +29,26 @@ h1{
   background-color: red;
 }
 
-h3{
-  color:white;
-  margin-left:10px;
-}
-
 .container{
-  text-align: center;
   display:flex;
 }
 
 #delete{
   height:25px;
   width:70px;
+  margin-top:10px;
+}
+
+#todo{
+  margin-top:13px;
+  height:10px;
+  margin-left: 10px;
+}
+
+#checkbox{
+  margin-top:10px;
+}
+
+.main-container{
   margin-top:20px;
 }

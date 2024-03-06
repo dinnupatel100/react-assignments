@@ -1,0 +1,39 @@
+.navbar {
+  background-color: cadetblue;
+  padding: 10px 0px;
+  height: 35px;
+  display: flex;
+  margin:0px;
+  margin-bottom: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#nav-brand{
+  text-decoration: none;
+  color: black;
+  padding-left: 20px;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  gap: 40px;
+  margin-right: 800px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
