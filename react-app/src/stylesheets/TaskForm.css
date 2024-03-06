@@ -1,0 +1,38 @@
+
+.taskform{
+  width:60%;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: rgb(224, 220, 220);
+ text-align: center;
+}
+
+button{
+  padding: 8px 20px;
+  border-radius: 5px;
+  background-color: rgb(59, 55, 55);
+  color:aliceblue;
+  width:100%;
+  margin: 8px 0;
+}
+
+button:hover{
+  background-color: black;
+}
+
+input{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc; 
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+p{
+  color:red;
+  margin:0;
+  margin-bottom:10px;
+}

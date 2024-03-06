@@ -1,7 +1,12 @@
 import './App.css'
+import TaskForm from './components/TaskForm'
 
 function App() {
-  return  <p></p>
+  return  (
+    <div className='papaDiv'>
+    <TaskForm/>
+    </div>
+  )
 }
 
 export default App
