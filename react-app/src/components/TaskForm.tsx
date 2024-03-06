@@ -1,4 +1,4 @@
-import {useFormik} from 'formik'
+import {Formik, Form, Field, ErrorMessage} from 'formik'
 import * as yup from 'yup'
 import '../stylesheets/TaskForm.css'
 
@@ -28,48 +28,54 @@ const validationSchema = yup.object({
 
 const TaskForm = () => {
   
-  const {touched, errors, getFieldProps, handleReset, handleSubmit} = useFormik({
-    initialValues,
-    onSubmit,
-    validationSchema
-  })
-  
   return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      onReset={onReset}
+    >
     <div className='taskform'>
-      <form onSubmit={handleSubmit}>
+      <Form>
         <h2>Task Form</h2>
-        <input 
+        <Field
           type="text" 
           placeholder="Enter a title"
-          {...getFieldProps('title')}
-          // value= {values.title}
-          // onBlur = {handleBlur}
-          // onChange = {handleChange}
+          name="title"
         />
-        {touched.title && errors.title && <p>{errors.title}</p>}
-        <input 
+        <ErrorMessage name="title">
+          {titleError => <p className="error">{titleError}</p>}
+        </ErrorMessage>
+        <Field
           type="text" 
           placeholder="Enter a description" 
-          {...getFieldProps('description')}
+          name="description"
         />
-        {touched.description && errors.description && <p>{errors.description}</p>}
-        <input 
+        <ErrorMessage name="description">
+          {descriptionError => <p className="error">{descriptionError}</p>}
+        </ErrorMessage>
+        <Field
           type="text" 
           placeholder="Enter assignee"
-          {...getFieldProps('assignee')}
-          />
-          {touched.assignee && errors.assignee && <p>{errors.assignee}</p>}
-        <input 
+          name="assignee"
+        />
+        <ErrorMessage name="assignee">
+          {assigneeError => <p className="error">{assigneeError}</p>}
+        </ErrorMessage>
+        <Field
           type="date" 
           placeholder="Enter a due date" 
-          {...getFieldProps('dueDate')}
+          name="dueDate"
         />
-        {touched.dueDate && errors.dueDate && <p>{errors.dueDate}</p>}
+        <ErrorMessage name="dueDate">
+          {dueDateError => <p className="error">{dueDateError}</p>}
+        </ErrorMessage>
 
         <button type="submit">Submit</button>
-        <button onClick={handleReset}>Reset</button>
-      </form>
+        <button type="reset">Reset</button>
+      </Form>
     </div>
+    </Formik>
   )
 }
 
