@@ -3,7 +3,7 @@ import TaskForm from './components/TaskForm'
 
 function App() {
   return  (
-    <div className='papaDiv'>
+    <div className='main'>
     <TaskForm/>
     </div>
   )

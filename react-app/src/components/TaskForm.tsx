@@ -33,7 +33,6 @@ const TaskForm = () => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-      onReset={onReset}
     >
     <div className='taskform'>
       <Form>
