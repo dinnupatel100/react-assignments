@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const AddTodo = () => {
   const [title, setTitle] = useState<string>("");
   const navigate = useNavigate()
-  let countId = 10;
+  // let countId = 10;
 
   const handleSubmit = async ()=>{
     try{
@@ -12,7 +12,7 @@ const AddTodo = () => {
         method: 'post',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({
-          'id': countId+=1,
+          // 'id': countId+=1,
           'title':title,
           'isCompleted': false
         })
