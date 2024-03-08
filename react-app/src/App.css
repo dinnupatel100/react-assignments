@@ -1,0 +1,58 @@
+.todo-app {
+  text-align: center;
+  border: 1px solid black;
+  margin-left: 200px;
+  margin-right: 200px;
+  padding: 10px;
+  background-color:darkslategray;
+  border-radius: 10px;
+}
+
+h1{
+  color:white
+}
+
+#button{
+  margin-left: 10px;
+  background-color: cyan;
+}
+
+#add{
+  margin-left:10px;
+  background-color:chartreuse;
+}
+
+#cancel{
+  background-color: red;
+  color:black
+}
+
+#delete{
+  margin-left:15px;
+  background-color: red;
+}
+
+h3{
+  color:white;
+  margin-left:10px;
+}
+
+.container{
+  text-align: center;
+  display:flex;
+}
+
+#delete{
+  height:25px;
+  width:70px;
+  margin-top:20px;
+}
+
+p{
+  color:white;
+  margin: 22px 30px;
+}
+
+#add-todo{
+  margin-bottom: 30px;
+}
