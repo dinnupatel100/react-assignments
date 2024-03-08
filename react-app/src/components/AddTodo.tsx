@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import {format} from 'date-fns'
 
 const AddTodo = () => {
   const [title, setTitle] = useState<string>("");
+  const [date, setDate] = useState<Date>(new Date());
   const navigate = useNavigate()
   // let countId = 10;
 
@@ -14,7 +16,8 @@ const AddTodo = () => {
         body: JSON.stringify({
           // 'id': countId+=1,
           'title':title,
-          'isCompleted': false
+          'isCompleted': false,
+          'dueDate': date
         })
       }).then(()=> navigate('/') );
     }catch(error){
@@ -29,6 +32,11 @@ const AddTodo = () => {
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       placeholder="add a todo title"
+      />
+      <input
+      type="date"
+      value={format(date, 'yyyy-MM-dd')}
+      onChange={(e) => setDate(new Date(e.target.value))}
       />
       <button
         id="add"

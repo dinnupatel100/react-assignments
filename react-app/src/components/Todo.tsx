@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import {useFetch} from './useFetch';
+import {useFetch} from '../hooks/useFetch';
 import { Navigate, useNavigate } from "react-router-dom";
+import {format,formatDistance} from 'date-fns'
 
 const Todo = () => {
   // todo data
@@ -8,6 +9,7 @@ const Todo = () => {
     id: number;
     title: string;
     isCompleted: boolean;
+    dueDate: string;
   }
 
   let {data, error, isLoading} = useFetch('http://localhost:5000/todos');
@@ -15,12 +17,14 @@ const Todo = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-    setTodos(data)
+    setTodos(data);
   },[data])
 
   if(isLoading){
     console.log("Loading......");
   }
+
+  
 
   const handleDelete = async (todo: ITodo) => {
     todos.splice(todos.indexOf(todo), 1);
@@ -41,16 +45,13 @@ const Todo = () => {
   return (
     <div className="todo-app">
       <h1>Todo list</h1>
-      <button onClick={()=>navigate('/add')}>Add Todo</button>
+      <button onClick={()=>navigate('/add') } id="add-todo">Add Todo</button>
       {
         //List all the todos
         todos.map((todo: ITodo) => (
           <>
             <div className="container"
               id="title"
-              style={{
-                textDecoration: todo.isCompleted ? "line-through" : "none",
-              }}
             >
               <input
                 id="checkbox"
@@ -60,7 +61,14 @@ const Todo = () => {
                 }}
                 type="checkbox"
               />
-              <h3 onClick = {()=> navigate('/view/'+todo.id)}>{todo.title}</ h3>
+              <h3 
+                onClick = {()=> navigate('/view/'+todo.id)}
+                style={{
+                  textDecoration: todo.isCompleted ? "line-through" : "none",
+                }}
+              >{todo.title}
+              </ h3>
+              <p>due {formatDistance(todo.dueDate, new Date(Date.now()),{addSuffix:true})}</p>
               <button
                 id="delete"
                 onClick={() => {

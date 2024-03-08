@@ -47,3 +47,12 @@ h3{
   width:70px;
   margin-top:20px;
 }
+
+p{
+  color:white;
+  margin: 22px 30px;
+}
+
+#add-todo{
+  margin-bottom: 30px;
+}
