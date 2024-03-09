@@ -5,13 +5,11 @@ import AddTodo from './components/AddTodo'
 import Error from './components/Error'
 import ViewTodo from './components/ViewTodo'
 import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
 
 function App() {
   return  (<>
       <BrowserRouter>
         <Navbar/>
-        <Sidebar/>
         <Routes>
           <Route path='/' element={<Todo />}/>
           <Route path='/add' element={<AddTodo />}/> 

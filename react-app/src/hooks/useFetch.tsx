@@ -3,6 +3,7 @@ type ITodo = {
   id: number;
   title: string;
   isCompleted: boolean;
+  dueDate: string;
 }
 
 export const useFetch = (url:string)=>{
