@@ -4,17 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import {formatDistance} from "date-fns"
 import { ArrowDownAZ, ArrowDownZA, ListChecks, Plus, Search, XSquare} from "lucide-react"
 
-
 export interface ITodo {
   id: number;
   title: string;
+  description: string;
+  assignee: string;
   isCompleted: boolean;
   dueDate: string;
 }
 
  const Todo = () => {
   // todo data
-  
   const {data, error, isLoading} = useFetch('http://localhost:5000/todos');
   const [todos, setTodos] = useState<ITodo[]>([]);
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export interface ITodo {
     await fetch('http://localhost:5000/todos/'+todo.id,
     { method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ "isCompleted": todo.isCompleted, "title":todo.title,"dueDate":todo.dueDate})
+      body: JSON.stringify(todo)
     })
   };
 
@@ -51,7 +51,7 @@ export interface ITodo {
     }
   }
 
-  const handleSort = (order) => {
+  const handleSort = (order:string) => {
     if (order == 'asc')
     {
       setTodos([...todos].sort((a,b)=>a.title.localeCompare(b.title)))

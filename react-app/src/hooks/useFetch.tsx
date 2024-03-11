@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+
 type ITodo = {
   id: number;
   title: string;
+  description: string;
+  assignee: string;
   isCompleted: boolean;
   dueDate: string;
 }
