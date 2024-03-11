@@ -51,8 +51,14 @@ export interface ITodo {
     }
   }
 
-  const handleSort = () => {
-    setTodos([...todos].sort((a,b)=>a.title.localeCompare(b.title)))
+  const handleSort = (order) => {
+    if (order == 'asc')
+    {
+      setTodos([...todos].sort((a,b)=>a.title.localeCompare(b.title)))
+    }else if (order == 'desc')
+    {
+      setTodos([...todos].sort((a,b)=>b.title.localeCompare(a.title)))
+    }
   }
 
   const handleStatus = () => {
@@ -83,36 +89,23 @@ export interface ITodo {
         <button className="flex bg-gray-900 py-2 rounded-xl w-30 p-2 text-sm text-white shadow-lg hover:text-gray-950 hover:bg-white border-solid border-2 border-gray-900 ">
           <Link to='/add' className="flex"><Plus className="h-5" /> Add todo </Link>
         </button>
-        <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-red-800 hover:text-black border-solid border-2 border-gray-900"
-          onClick={handleSort}> <ArrowDownAZ />
+        <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
+          onClick={()=>handleSort('asc')}> <ArrowDownAZ />
         </button>
-        <button className="text-white bg-gray-800 px-3 py-1 rounded-md"
-          onClick={handleSort}> <ArrowDownZA />
+        <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
+          onClick={()=>handleSort('desc')}> <ArrowDownZA />
         </button>
-        <button className="text-white bg-gray-800 px-3 py-1 rounded-md"
+        <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
           onClick={handleStatus}><ListChecks />
         </button>
-        <button className="text-white bg-gray-800 px-3 py-1 rounded-md"
+        <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
           onClick={handleTodos}>All Todo
         </button>
       </div>
       </div>
-      {isLoading &&  
-        <button type="button" className="bg-indigo-500 ..." disabled>
-          <svg className="motion-reduce:hidden animate-spin ..." viewBox="0 0 24 24"></svg>
-          Loading...
-        </button>
-      }
-      {/* <table className="my-10 text-xl"> 
-        <th className="flex border-y-2 border-s-gray-200 font-serif p-2">
-          <tr className="mx-20">Title</tr>
-          <tr className="mx-20">Due</tr>
-          <tr className="mx-20">Status</tr>
-          <tr className="mx-20">Actions</tr>
-        </th>
-      </table> */}
+      { isLoading && <h3>Loading......</h3> }
       <div className="divide-y my-8 ">
-        <div className="grid grid-cols-5 gap-0 flex py-2 font-serif font-medium text-xl text-center">
+        <div className="grid grid-cols-5 gap-0 py-2 font-serif font-bold text-xl text-center">
           <p className="row-span-3 px-5">Title</p>
           <p className="col-span-2">Due</p>
           <p className="mx-20">Status</p>
