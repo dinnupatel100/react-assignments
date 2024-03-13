@@ -40,7 +40,8 @@ const AddTodo = () => {
     }).then(()=>{
       navigate('/')
     })
-}
+  }
+
   return (
     <Formik
       initialValues={initialValues}

@@ -1,29 +1,36 @@
 import { useState, useEffect } from "react";
-import {useFetch} from '../hooks/useFetch';
 import { Link, useNavigate } from "react-router-dom";
 import {formatDistance} from "date-fns"
 import { ArrowDownAZ, ArrowDownZA, ListChecks, Plus, Search, XSquare} from "lucide-react"
-
-export interface ITodo {
-  id: number;
-  title: string;
-  description: string;
-  assignee: string;
-  isCompleted: boolean;
-  dueDate: string;
-}
+import { ITodo } from "../types/ITodo";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import axios from 'axios';
 
  const Todo = () => {
   // todo data
-  const {data, error, isLoading} = useFetch('http://localhost:5000/todos');
   const [todos, setTodos] = useState<ITodo[]>([]);
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
-
+  const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(2);
+  const [order, setOrder] = useState<string>("asc");
+  const [todoStatus, setTodoStatus] = useState<string>('')
+  const [totalpages, setTotalPages] = useState(1)
+  const {data, error, isPending} = useQuery({
+    queryKey: ['todos',page,limit,search,order, todoStatus],
+    queryFn: async() => {
+        const res = await axios.get(`http://localhost:5000/todos?_page=${page}&_limit=${limit}&title_like=${search}&_sort=title&_order=${order}&isCompleted_like=${todoStatus}`);
+        setTotalPages(Math.ceil(res.headers['x-total-count']/limit))
+        if(!limit) setTotalPages(1)
+        return res.data
+    },
+  })
+  
   useEffect(()=>{
+    if(!data) return;
     setTodos(data)
   },[data])
-
+  
   const handleDelete = async (todo: ITodo) => {
     todos.splice(todos.indexOf(todo), 1);
     setTodos([...todos]);
@@ -40,33 +47,8 @@ export interface ITodo {
     })
   };
 
-  const handleSearch = (e:any) => {
-    const searchVal = e.target.value
-    setSearch(searchVal)
-    if(searchVal){
-      const newArr = todos.filter(todo=>todo.title.toLowerCase().includes(searchVal.toLowerCase()))
-      setTodos(newArr)
-    }else{
-      setTodos(data)
-    }
-  }
-
-  const handleSort = (order:string) => {
-    if (order == 'asc')
-    {
-      setTodos([...todos].sort((a,b)=>a.title.localeCompare(b.title)))
-    }else if (order == 'desc')
-    {
-      setTodos([...todos].sort((a,b)=>b.title.localeCompare(a.title)))
-    }
-  }
-
-  const handleStatus = () => {
-    setTodos(todos.filter(todo=>todo.isCompleted))
-  }
-
-  const handleTodos = () => {
-    setTodos(data);
+  if(error){
+    return <p>{error.message}</p>
   }
   
   return (
@@ -83,27 +65,27 @@ export interface ITodo {
           className="px-10 h-10 bg-indigo-50 rounded-xl w-96 border focus:outline-none focus:border-gray-400 "
           placeholder="search todo"
           value={search}
-          onChange={handleSearch}
+          onChange={(e)=>{setSearch(e.target.value);setPage(1)}}
         />
         </div>
         <button className="flex bg-gray-900 py-2 rounded-xl w-30 p-2 text-sm text-white shadow-lg hover:text-gray-950 hover:bg-white border-solid border-2 border-gray-900 ">
           <Link to='/add' className="flex"><Plus className="h-5" /> Add todo </Link>
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>handleSort('asc')}> <ArrowDownAZ />
+          onClick={()=>setOrder('asc')}> <ArrowDownAZ />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>handleSort('desc')}> <ArrowDownZA />
+          onClick={()=>setOrder('desc')}> <ArrowDownZA />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={handleStatus}><ListChecks />
+          onClick={()=>{setTodoStatus('true'); setPage(1)}}><ListChecks />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={handleTodos}>All Todo
+          onClick={()=>setTodoStatus('')}>All Todo
         </button>
       </div>
       </div>
-      { isLoading && <h3>Loading......</h3> }
+      { isPending ? <h3>Loading......</h3> : 
       <div className="divide-y my-8 ">
         <div className="grid grid-cols-5 gap-0 py-2 font-serif font-bold text-xl text-center">
           <p className="row-span-3 px-5">Title</p>
@@ -149,7 +131,18 @@ export interface ITodo {
           </div>
         ))
       }
+        <div className="flex justify-center gap-10">
+          <button className="mt-10 bg-gray-800 px-3 py-1 text-white rounded-md disabled:opacity-45"
+            onClick={()=>setPage((page)=>page-1)} disabled={page === 1}>Previous
+          </button>
+          <p className="mt-10">Page: {page}/{totalpages}</p>
+          <button className="mt-10 bg-gray-800 px-3 py-1 text-white rounded-md disabled:opacity-45"
+            onClick={()=>setPage((page)=>page+1)} disabled={page >= totalpages}>Next
+          </button>
+          <input className="mt-10 w-20" type="number" placeholder="limit" value={limit} onChange={(e)=>{setLimit(parseInt(e.target.value));setPage(1)}}/>
+        </div>
       </div>
+      }
     </div>
     </div>
   );

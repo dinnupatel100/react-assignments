@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-
-interface ITodo {
-  id: number;
-  title: string;
-  description: string;
-  assignee: string;
-  isCompleted: boolean;
-  dueDate: string;
-}
+import { ITodo } from "../types/ITodo";
 
 const ViewTodo = () => {
   const [todo,setTodo] = useState<ITodo>()
