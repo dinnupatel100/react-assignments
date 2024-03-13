@@ -5,23 +5,40 @@ import { ArrowDownAZ, ArrowDownZA, ListChecks, Plus, Search, XSquare} from "luci
 import { ITodo } from "../types/ITodo";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from 'axios';
+import {useReducer} from 'react'
 
- const Todo = () => {
+const initialValues = {
+  search : '',
+  page : 1,
+  limit : 3,
+  order : 'asc',
+  todoStatus : '',
+  totalPages : 1
+}
+
+const reducer = (currentState:any, action:any)=>{
+  switch(action.type){
+    case "SET_ORDER" : return {...currentState, order: action.value};
+    case 'SET_PAGE' : return {...currentState, page: action.value};
+    case 'SET_LIMIT' : return {...currentState, limit: action.value};
+    case'SET_SEARCH' : return {...currentState, search: action.value};
+    case 'SET_TODOSTATUS' : return {...currentState, todoStatus: action.value};
+    case 'SET_TOTALPAGES' : return {...currentState, totalPages: action.value};
+    default : return currentState;
+  }
+}
+
+const Todo = () => {
   // todo data
+  const [state, dispatch] = useReducer(reducer, initialValues);
   const [todos, setTodos] = useState<ITodo[]>([]);
   const navigate = useNavigate();
-  const [search, setSearch] = useState<string>("");
-  const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(2);
-  const [order, setOrder] = useState<string>("asc");
-  const [todoStatus, setTodoStatus] = useState<string>('')
-  const [totalpages, setTotalPages] = useState(1)
   const {data, error, isPending} = useQuery({
-    queryKey: ['todos',page,limit,search,order, todoStatus],
+    queryKey: ['todos', state.page, state.limit, state.search, state.order, state.todoStatus],
     queryFn: async() => {
-        const res = await axios.get(`http://localhost:5000/todos?_page=${page}&_limit=${limit}&title_like=${search}&_sort=title&_order=${order}&isCompleted_like=${todoStatus}`);
-        setTotalPages(Math.ceil(res.headers['x-total-count']/limit))
-        if(!limit) setTotalPages(1)
+        const res = await axios.get(`http://localhost:5000/todos?_page=${state.page}&_limit=${state.limit}&title_like=${state.search}&_sort=title&_order=${state.order}&isCompleted_like=${state.todoStatus}`);
+        dispatch({type:'SET_TOTALPAGES', value: Math.ceil(res.headers['x-total-count']/state.limit)})
+        if(!state.limit) dispatch({type:'SET_TOTALPAGES', value:1})
         return res.data
     },
   })
@@ -64,24 +81,25 @@ import axios from 'axios';
           id="search"
           className="px-10 h-10 bg-indigo-50 rounded-xl w-96 border focus:outline-none focus:border-gray-400 "
           placeholder="search todo"
-          value={search}
-          onChange={(e)=>{setSearch(e.target.value);setPage(1)}}
+          value={state.search}
+          onChange={(e)=>{ dispatch({type:'SET_SEARCH', value: e.target.value});
+                           dispatch({type:'SET_PAGE',value:1})}}
         />
         </div>
         <button className="flex bg-gray-900 py-2 rounded-xl w-30 p-2 text-sm text-white shadow-lg hover:text-gray-950 hover:bg-white border-solid border-2 border-gray-900 ">
           <Link to='/add' className="flex"><Plus className="h-5" /> Add todo </Link>
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>setOrder('asc')}> <ArrowDownAZ />
+          onClick={()=>dispatch({type: 'SET_ORDER', value: 'asc'})}> <ArrowDownAZ />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>setOrder('desc')}> <ArrowDownZA />
+          onClick={()=>dispatch({type: 'SET_ORDER', value: 'desc'})}> <ArrowDownZA />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>{setTodoStatus('true'); setPage(1)}}><ListChecks />
+          onClick={()=>{dispatch({type:'SET_TODOSTATUS',value:'true'}); dispatch({type:'SET_PAGE', value:1})}}><ListChecks />
         </button>
         <button className="text-white bg-gray-800 px-3 py-1 rounded-md hover:bg-white hover:text-black border-solid border-2 border-gray-900"
-          onClick={()=>setTodoStatus('')}>All Todo
+          onClick={()=>dispatch({type:'SET_TODOSTATUS',value:''})}>All Todo
         </button>
       </div>
       </div>
@@ -133,13 +151,13 @@ import axios from 'axios';
       }
         <div className="flex justify-center gap-10">
           <button className="mt-10 bg-gray-800 px-3 py-1 text-white rounded-md disabled:opacity-45"
-            onClick={()=>setPage((page)=>page-1)} disabled={page === 1}>Previous
+            onClick={()=>dispatch({type:'SET_PAGE', value: state.page-1 })} disabled={state.page === 1}>Previous
           </button>
-          <p className="mt-10">Page: {page}/{totalpages}</p>
+          <p className="mt-10">Page: {state.page}/{state.totalPages}</p>
           <button className="mt-10 bg-gray-800 px-3 py-1 text-white rounded-md disabled:opacity-45"
-            onClick={()=>setPage((page)=>page+1)} disabled={page >= totalpages}>Next
+            onClick={()=>dispatch({type:'SET_PAGE', value: state.page+1 })} disabled={state.page >= state.totalPages}>Next
           </button>
-          <input className="mt-10 w-20" type="number" placeholder="limit" value={limit} onChange={(e)=>{setLimit(parseInt(e.target.value));setPage(1)}}/>
+          <input className="mt-10 w-20" type="number" placeholder="limit" value={state.limit} onChange={(e)=>{dispatch({type:'SET_LIMIT', value:parseInt(e.target.value)});dispatch({type:'SET_PAGE',value:1})}}/>
         </div>
       </div>
       }
