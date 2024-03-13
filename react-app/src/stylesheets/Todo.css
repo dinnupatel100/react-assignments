@@ -1,0 +1,29 @@
+
+/* #search{
+  border-radius: 6px;
+  border:none;
+  padding:4px;
+}
+
+#search:focus {
+  background-color:rgb(181, 226, 224);
+  transform:scaleY(1.1);
+  outline: none;
+  border-bottom:2px solid black;
+}
+
+button:hover{
+  background-color: lightseagreen;
+  transform: scale(1.1);
+}
+
+button{
+  margin-left: 30px;
+  border-radius: 8px;
+  padding:4px;
+}
+
+#dueDate{
+  margin: 15px 30px;
+} */
+

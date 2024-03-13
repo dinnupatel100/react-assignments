@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": "241f",
+      "title": "Learn React",
+      "isCompleted": false,
+      "dueDate": "2024-03-12T00:00:00.000Z"
+    },
+    {
+      "id": "1d1c",
+      "title": "Learn Java",
+      "isCompleted": false,
+      "dueDate": "2024-03-22T00:00:00.000Z"
+    },
+    {
+      "id": "447c",
+      "title": "Abc",
+      "isCompleted": false,
+      "dueDate": "2024-03-22T00:00:00.000Z"
+    }
+  ]
+}
