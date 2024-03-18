@@ -1,5 +1,5 @@
+import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import './App.css'
 import Todo from './components/Todo'
 import AddTodo from './components/AddTodo'
 import Error from './components/Error'
@@ -10,7 +10,8 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 const queryClient = new QueryClient();
 
 function App() {
-  return  (<>
+  return (
+    <div className="bg-gray-50 h-auto">
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Navbar/>
@@ -22,8 +23,8 @@ function App() {
         </Routes >
       </QueryClientProvider>
     </BrowserRouter>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

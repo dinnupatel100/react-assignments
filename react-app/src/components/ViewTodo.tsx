@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { ITodo } from "../types/ITodo";
+import { ITodo } from "../types/ITodo"
 
 const ViewTodo = () => {
-  const [todo,setTodo] = useState<ITodo>()
+  const [todo,setTodo] = useState<ITodo>();
   const param = useParams();
 
   useEffect(()=>{

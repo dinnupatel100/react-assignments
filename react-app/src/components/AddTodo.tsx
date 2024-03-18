@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter, useNavigate } from "react-router-dom";
 import {Formik, Form, Field, ErrorMessage} from 'formik'
 import * as yup from 'yup'
 
@@ -38,7 +38,7 @@ const AddTodo = () => {
         isCompleted:false
       })
     }).then(()=>{
-      navigate('/')
+      // navigate('/')
     })
   }
 
@@ -53,6 +53,7 @@ const AddTodo = () => {
         <Field
         className="h-10 mt-16 px-5 mx-16 w-96 border-solid border-2 border-gray-100 rounded-md"
         name = "title"
+        type= "text"
         placeholder="todo title"
         />
         <ErrorMessage name="title">
@@ -62,6 +63,7 @@ const AddTodo = () => {
         <Field
         className="h-10 mt-3 px-5 mx-16 w-96 border-solid border-2 border-gray-100 rounded-md"
         name = "description"
+        type = "text"
         placeholder="todo description"
         />
         <ErrorMessage name="description">
@@ -70,6 +72,7 @@ const AddTodo = () => {
 
         <Field
         className="h-10 mt-3 px-5 mx-16 w-96 border-solid border-2 border-gray-100 rounded-md"
+        type="text"
         name = "assignee"
         placeholder="todo assignee"
         />
@@ -81,6 +84,7 @@ const AddTodo = () => {
         name = "dueDate"
         placeholder="todo due date"
         type="date"
+        data-testid = 'date'
         />
         <ErrorMessage name="dueDate">
           {dueDateError => <p className="text-red-700 mx-20 text-sm">{dueDateError}</p>}
